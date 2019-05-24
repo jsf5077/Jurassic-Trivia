@@ -16,19 +16,28 @@
         <h1>Jurassic Trivia</h1>
         <h2 class="timer">30 seconds</h2>
         <button class="start">Click to Start Game!</button>
-        <div class="question">question field</div>
-        <button class="button1"></button>
+        <div class="question"></div>
+        <div class="button"></div>
+        <!-- <button class="button1"></button>
         <button class="button2"></button>
         <button class="button3"></button>
-        <button class="button4"></button>
+        <button class="button4"></button> -->
     <!-- JQuery -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Script -->
     <script>
         //GLOBAL ARRAYS FOR QUESTIONS
-        var q1answers = ["1a1", "1a2", "1a3", "1a4"];
-        var q2answers = ["2a1", "2a2", "2a3", "2a4"];
+        var questionGen = [{
+            question1: "question one",
+            answer1: ["answer one a", "answer two a", "answer three a", "answer four a"],
+            correctAns1: "answer one a"
+            }, {
+            question2: "question two",
+            answer2: ["answer one b", "answer two b", "answer three b", "answer four b"],
+            correctAns1: "answer one b"
+            }];
 
+            console.log(questionGen);
         //VARIABLES THAT WILL HELP DETERMINE WHICH QUESTIONS/ANSWERS TO POPULATE
         var q1, q2 = false;
         
@@ -42,34 +51,19 @@
 
         //CLICK FUNCTIONS FOR BUTTONS
         $(".start").on("click", start);
-        $(".button1").on("click", stop);
-        $(".button2").on("click", stop);
-        $(".button3").on("click", stop);
-        $(".button4").on("click", stop);
+        // $(".button2").on("click", stop);
+        // $(".button3").on("click", stop);
+        // $(".button4").on("click", stop);
 
         function hideButtons() {
             //HIDE THE BUTTONS AND QUESTION FOR THE START PAGE
             $(".question").hide();
-            $(".button1").hide();
-            $(".button2").hide();
-            $(".button3").hide();
-            $(".button4").hide();
         }
-        hideButtons();
 
+        hideButtons();
         function showButtons() {
             //SHOW THE BUTTONS FOR GAME START
             $(".question").show();
-            $(".button1").show();
-            $(".button2").show();
-            $(".button3").show();
-            $(".button4").show();
-        }
-        function correct() {
-            $(".question").text("Correct");
-        }
-        function wrong() {
-            $(".question").text("Wrong");
         }
 
         //TRIGGERED BY THE START BUTTON
@@ -94,32 +88,27 @@
 
         //START BUTTON TO INITIATE A GAME START FUNCTION
         $(".start").on("click", function() {
-            q1 = true;
             gameStart();
             $(this).hide();
         });
 
         //GAME START FUNCTION WILL CONTAIN THE ENTIRETY OF THE GAME
         function gameStart() {
-            showButtons();
-
-            if (q1 = true) {
-                $(".question").text("Question One");
-                $(".button1").text(q1answers[0]);
-                $(".button2").text(q1answers[1]);
-                $(".button3").text(q1answers[2]);
-                $(".button4").text(q1answers[3]);
-            } else if (q2 = true) {
-                $(".question").text("Question Two");
-                $(".button1").text(q2answers[0]);
-                $(".button2").text(q2answers[1]);
-                $(".button3").text(q2answers[2]);
-                $(".button4").text(q2answers[3]);
+            //STOPS INTERVAL
+            function stop() {
+            clearInterval(interval);
             }
-            $(".button1").on("click", stop);
-            $(".button2").on("click", stop);
-            $(".button3").on("click", stop);
-            $(".button4").on("click", stop);
+            showButtons();
+            //QUESTION ONE
+            $(".question").html("<h2>"+questionGen[0].question1+"</h2>");
+            //QUESTION ONE
+                //FOUR BUTTONS HERE
+            for (i = 0; i < questionGen[0].answer1.length; i++) {
+                $(".question").append("<button class='button'>"+questionGen[0].answer1[i]+"</button>")
+            }
+            $(".button").on("click", stop);
+        }
+           
 
             
             //TIMER FOR 30 SECONDS
@@ -138,7 +127,7 @@
                 //POST RESULTS
                 //PLAY AGAIN BUTTON
                     //WHEN PRESSED RESET SCORE AND RERUN GAME START FUNCTION
-        }
+        
         
         
     
