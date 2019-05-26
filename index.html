@@ -16,6 +16,7 @@
         <h1>Jurassic Trivia</h1>
         <h2 class="timer">30 seconds</h2>
         <button class="start">Click to Start Game!</button>
+        <button class="again">Play Again!</button>
         <div class="question"></div>
         <div class="result"></div>
         <div class="stats"></div>
@@ -60,6 +61,8 @@
         function hideButtons() {
             //HIDE THE BUTTONS AND QUESTION FOR THE START PAGE
             $(".question").hide();
+            $(".again").hide();
+            $(".stats").hide();
         }
 
         function showButtons() {
@@ -116,7 +119,6 @@
             gameStart()
             time = 30;
             $(".timer").html(time + " seconds");
-            start();
             console.log("wins: "+wins);
             console.log("Losses: "+losses);
             $(".result").empty();
@@ -130,24 +132,26 @@
             gameStart();
             time = 30;
             $(".timer").html(time + " seconds");
-            start();
             console.log("wins: "+wins);
             console.log("Losses: "+losses);
             $(".result").empty();
         }
 
         function finalResults() {
+            stop();
+            $(".timer").hide();
+            $(".stats").show();
             $(".question").html("<h2>Game Over!</h2>");
-            $(".result").html("<button class='final'>Click to play again!</button>")
-            $(".stats").append("<div class='score'>Answers correct: "+wins+"</div>")
-            $(".stats").append("<div class='score'>Answers wrong: "+losses+"</div>")
-            $(".result").on("click", function() {
-                $(this).remove();
+            $(".stats").text("Answers correct: "+wins);
+            $(".stats").text("Answers wrong: "+losses);
+            $(".again").on("click", function() {
+                $(this).hide();
                 wins = 0;
                 losses = 0;
                 questionCounter = 0;
                 time = 30;
                 $(".stats").hide();
+                $(".timer").show();
                 gameStart();
                 start();
             });
@@ -156,9 +160,12 @@
         //GAME START FUNCTION WILL CONTAIN THE ENTIRETY OF THE GAME
         function gameStart() {
             if (questionCounter === questionGen.length) {
+                $(".again").show();
+                $(".question").html("<h2>Play!</h2>");
                 finalResults();
                 return;
             } else {
+                start();
             //MAKE BUTTONS APPEAR
             showButtons();
             //QUESTION APPEARS
@@ -182,7 +189,8 @@
 
         hideButtons();
 
-        $(".start").on("click", start);
+        $(".stats").append("<div class='score'>Answers correct: "+wins+"</div>")
+        $(".stats").append("<div class='score'>Answers wrong: "+losses+"</div>")
 
         $(".start").on("click", function() {
             $(this).remove();
