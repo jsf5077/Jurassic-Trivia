@@ -13,21 +13,31 @@
   </head>
 
   <body>
+        <button class="stop">Pause Music</button>
+        <button class="play">Play Music</button>
         <h1>Jurassic Trivia</h1>
         <h2 class="timer">30 seconds</h2>
         <button class="start">Click to Start Game!</button>
         <button class="again">Play Again!</button>
         <div class="question"></div>
         <div class="result"></div>
+        <div class="img"></div>
         <div class="stats"></div>
         <div class="button"></div>
+        <audio id="opening"><source src="assets/music/opening.mp3" type="audio/mpeg"></audio>
+        <audio id="main"><source src="assets/music/main.mp3" type="audio/mpeg"></audio>
+        <audio id="wrong"><source src="assets/music/magic.mp3" type="audio/mpeg"></audio>
         
     <!-- JQuery -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Script -->
     <script>
         //GLOBAL VARIABLES////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        // {
+        //     question: "When Lex tries to go on the computer to lock the building doors, she famously states...",
+        //     answer: ["It's a Linux System!", "It's a Windows System!", "It's a Unix System!", "It's a MacOS System!"],
+        //     correctAns: "It's a Unix System!"
+        //     },
         //ARRAY FOR QUESTIONS
         var questionGen = [{
             question: "How many velociraptors appear in Jurassic Park?",
@@ -45,10 +55,6 @@
             question: "Although Jurassic Park is catchy, most dinosaurs in the film come from which period?",
             answer: ["Triassic", "Cambrian Period", "no, it's the Jurassic Period", "Cretaceous Period"],
             correctAns: "Cretaceous Period"
-            }, {
-            question: "When Lex tries to go on the computer to lock the building doors, she famously states...",
-            answer: ["It's an Linux System!", "It's a Windows system!", "It's a Unix system!", "It's a MacOS System!"],
-            correctAns: "It's a Unix system!"
             }, {
             question: "Jurassic Park has a runtime of 127 minutes. How many of them actually contain dinosaurs?",
             answer: ["10 Minutes", "15 Minutes", "22 Minutes", "27 Minutes"],
@@ -125,12 +131,14 @@
             //IF ELSE STATEMENT THAT COMPARES THE BUTTON DATA WITH THE CURRENT QUESTIONS CORRECT ANSWER
             if ($(event.target).data("answer")== questionGen[questionCounter].correctAns) {
                 hideButtons();
-                $(".result").html("<h2>Right Answer</h2>");
+                $(".result").html("<h2>Correct!</h2>");
                 wins++;
                 setTimeout(rightAnswer, 3000);
             } else {
                 hideButtons();
                 $(".result").html("<h2>Wrong Answer</h2>");
+                $(".img").html("<img src='assets/images/wrong.gif' width='480' height='360'></img>");
+                $('audio#wrong')[0].play()
                 losses++;
                 setTimeout(wrongAnswer, 3000);
             }
@@ -162,6 +170,7 @@
             console.log("Losses: "+losses);
             console.log("Unanswered: "+noAnswer);
             $(".result").empty();
+            $(".img").empty();
         }
         function notAnswered() {
             console.log("reset");
@@ -225,18 +234,37 @@
 
         //MAIN PROCESS//////////////////////////////////////////////////////////////////////////////////////////////////////// 
         //CLICK FUNCTIONS FOR START BUTTON
+        $(document).ready(function() {
+            hideButtons();
 
-        hideButtons();
+            $('audio#opening')[0].play()
+            $(".stop").hide();
+            $(".play").hide();
 
-        $(".start").on("click", function() {
-            $(this).remove();
-            gameStart();
-        });
-        //CHECKS DOCUMENT PAGE FOR EVENT CLICK. ORIGINALLY HAD THIS INSIDE THE GAMESTART FUNCTION AND FOUND THAT THERE WAS A SCOPING ISSUE
-        $(document).on("click", '.button', function(event) {
-            console.log("user click");
-            //PASS EVENT CLICK BUTTON ONFIRMATION INTO THE CHECK ANSWER FUNCTION
-            checkAnswer(event);
+            $(".start").on("click", function() {
+                $('audio#opening')[0].pause()
+                $('audio#opening')[0].currentTime = 0
+                $('audio#main')[0].play()
+                $(this).remove();
+                $(".stop").show();
+                gameStart();
+            });
+            $(".stop").on("click", function() {
+                $('audio#main')[0].pause()
+                $(".stop").hide();
+                $(".play").show();
+            });
+            $(".play").on("click", function() {
+                $('audio#main')[0].play()
+                $(".stop").show();
+                $(".play").hide();
+            });
+            //CHECKS DOCUMENT PAGE FOR EVENT CLICK. ORIGINALLY HAD THIS INSIDE THE GAMESTART FUNCTION AND FOUND THAT THERE WAS A SCOPING ISSUE
+            $(document).on("click", '.button', function(event) {
+                console.log("user click");
+                //PASS EVENT CLICK BUTTON ONFIRMATION INTO THE CHECK ANSWER FUNCTION
+                checkAnswer(event);
+            });
         });
    
     </script>
