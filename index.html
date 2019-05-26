@@ -42,19 +42,18 @@
             correctAns: "answer one c"
             }];
 
-            console.log(questionGen);
+            console.log("Array Length: "+questionGen.length);
         
         var time = 30;
         var wins = 0;
         var losses = 0;
         var noAnswer = 0;
         var questionCounter = 0;
+        console.log("questioncounter:"+questionCounter);
         var gameEnd = false;
 
         //PLACEHOLDER FOR TIMER INTERVAL
         var interval;
-
-        console.log(questionGen.length);
 
         //FUNCTIONS////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -112,7 +111,6 @@
         function rightAnswer() {
             console.log("reset");
             questionCounter++;
-            
             console.log("questioncounter:"+questionCounter);
             showButtons();
             gameStart()
@@ -127,7 +125,6 @@
         function wrongAnswer() {
             console.log("reset");
             questionCounter++;
-            
             console.log("questioncounter:"+questionCounter);
             showButtons();
             gameStart();
@@ -158,6 +155,10 @@
 
         //GAME START FUNCTION WILL CONTAIN THE ENTIRETY OF THE GAME
         function gameStart() {
+            if (questionCounter === questionGen.length) {
+                finalResults();
+                return;
+            } else {
             //MAKE BUTTONS APPEAR
             showButtons();
             //QUESTION APPEARS
@@ -173,6 +174,7 @@
             console.log($("#button1").attr("data-answer"));
             console.log($("#button2").attr("data-answer"));
             console.log($("#button3").attr("data-answer"));
+            }
         }
 
         //MAIN PROCESS//////////////////////////////////////////////////////////////////////////////////////////////////////// 
