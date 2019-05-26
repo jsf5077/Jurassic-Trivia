@@ -30,17 +30,41 @@
 
         //ARRAY FOR QUESTIONS
         var questionGen = [{
-            question: "question one",
-            answer: ["answer one a", "answer two a", "answer three a", "answer four a"],
-            correctAns: "answer one a"
+            question: "How many velociraptors appear in Jurassic Park?",
+            answer: ["One", "Two", "Three", "Four"],
+            correctAns: "Four"
             }, {
-            question: "question two",
-            answer: ["answer one b", "answer two b", "answer three b", "answer four b"],
-            correctAns: "answer one b"
+            question: "The Tryannosaurus Rex has been affectionately named ____ by the fans",
+            answer: ["Arexa", "Rexy", "Barney", "Roberta"],
+            correctAns: "Rexy"
             }, {
-            question: "question three",
-            answer: ["answer one c", "answer two c", "answer three c", "answer four c"],
-            correctAns: "answer one c"
+            question: "Amongst other sound effects, what animals were used to create the T-Rex roar?",
+            answer: ["Alligators", "Tigers", "Baby Elephants", "All the above"],
+            correctAns: "All the above"
+            }, {
+            question: "Although Jurassic Park is catchy, most dinosaurs in the film come from which period?",
+            answer: ["Triassic", "Cambrian Period", "no, it's the Jurassic Period", "Cretaceous Period"],
+            correctAns: "Cretaceous Period"
+            }, {
+            question: "When Lex tries to go on the computer to lock the building doors, she famously states...",
+            answer: ["It's an Linux System!", "It's a Windows system!", "It's a Unix system!", "It's a MacOS System!"],
+            correctAns: "It's a Unix system!"
+            }, {
+            question: "Jurassic Park has a runtime of 127 minutes. How many of them actually contain dinosaurs?",
+            answer: ["10 Minutes", "15 Minutes", "22 Minutes", "27 Minutes"],
+            correctAns: "15 Minutes"
+            }, {
+            question: "What was Jurassic Park's biggest fault?",
+            answer: ["Too Much Automation", "...It's Dinosaurs", "The Dinosaurs Didn't Have Feathers.", "Weather"],
+            correctAns: "Too Much Automation"
+            }, {
+            question: "What was John Hammond's signature catch phrase?",
+            answer: ["Spared Some Expense!", "Spared No Expense!", "Welcome to Jurassic Park!", "We have a T-Rex!"],
+            correctAns: "Spared No Expense!"
+            }, {
+            question: "What island is Jurassic Park built on?",
+            answer: ["Isla Sorna", "Isla Muerte", "Isla Nublar", "Isla Pena"],
+            correctAns: "Isla Nublar"
             }];
 
             console.log("Array Length: "+questionGen.length);
@@ -62,7 +86,6 @@
             //HIDE THE BUTTONS AND QUESTION FOR THE START PAGE
             $(".question").hide();
             $(".again").hide();
-            $(".stats").hide();
         }
 
         function showButtons() {
@@ -84,7 +107,9 @@
             if (time === 0) {
                 noAnswer++;
                 stop();
-                alert("Time's up loser!");
+                hideButtons();
+                $(".result").html("<h2>Not Answered in Time</h2>");
+                setTimeout(notAnswered, 3000);
             }
         }
 
@@ -121,6 +146,7 @@
             $(".timer").html(time + " seconds");
             console.log("wins: "+wins);
             console.log("Losses: "+losses);
+            console.log("Unanswered: "+noAnswer);
             $(".result").empty();
         }
 
@@ -134,24 +160,38 @@
             $(".timer").html(time + " seconds");
             console.log("wins: "+wins);
             console.log("Losses: "+losses);
+            console.log("Unanswered: "+noAnswer);
+            $(".result").empty();
+        }
+        function notAnswered() {
+            console.log("reset");
+            questionCounter++;
+            console.log("questioncounter:"+questionCounter);
+            showButtons();
+            gameStart();
+            time = 30;
+            $(".timer").html(time + " seconds");
+            console.log("wins: "+wins);
+            console.log("Losses: "+losses);
+            console.log("Unanswered: "+noAnswer);
             $(".result").empty();
         }
 
         function finalResults() {
             stop();
             $(".timer").hide();
-            $(".stats").show();
             $(".question").html("<h2>Game Over!</h2>");
-            $(".stats").text("Answers correct: "+wins);
-            $(".stats").text("Answers wrong: "+losses);
+            $(".stats").append("<div class='score'>Answers Correct: "+wins+"</div>");
+            $(".stats").append("<div class='score'>Answers Wrong: "+losses+"</div>");
+            $(".stats").append("<div class='score'>Questions Not Answered: "+noAnswer+"</div>");
             $(".again").on("click", function() {
                 $(this).hide();
                 wins = 0;
                 losses = 0;
                 questionCounter = 0;
                 time = 30;
-                $(".stats").hide();
                 $(".timer").show();
+                $(".stats").empty();
                 gameStart();
                 start();
             });
@@ -161,7 +201,6 @@
         function gameStart() {
             if (questionCounter === questionGen.length) {
                 $(".again").show();
-                $(".question").html("<h2>Play!</h2>");
                 finalResults();
                 return;
             } else {
@@ -188,9 +227,6 @@
         //CLICK FUNCTIONS FOR START BUTTON
 
         hideButtons();
-
-        $(".stats").append("<div class='score'>Answers correct: "+wins+"</div>")
-        $(".stats").append("<div class='score'>Answers wrong: "+losses+"</div>")
 
         $(".start").on("click", function() {
             $(this).remove();
