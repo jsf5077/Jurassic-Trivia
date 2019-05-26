@@ -16,7 +16,7 @@
         <button class="stop">Pause Music</button>
         <button class="play">Play Music</button>
         <h1>Jurassic Trivia</h1>
-        <h2 class="timer">30 seconds</h2>
+        <h2 class="timer">20 seconds</h2>
         <button class="start">Click to Start Game!</button>
         <button class="again">Play Again!</button>
         <div class="question"></div>
@@ -27,6 +27,9 @@
         <audio id="opening"><source src="assets/music/opening.mp3" type="audio/mpeg"></audio>
         <audio id="main"><source src="assets/music/main.mp3" type="audio/mpeg"></audio>
         <audio id="wrong"><source src="assets/music/magic.mp3" type="audio/mpeg"></audio>
+        <audio id="roar"><source src="assets/music/roar.mp3" type="audio/mpeg"></audio>
+        <audio id="correct"><source src="assets/music/correct.mp3" type="audio/mpeg"></audio>
+        <audio id="timeUp"><source src="assets/music/timeUp.mp3" type="audio/mpeg"></audio>
         
     <!-- JQuery -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -42,40 +45,48 @@
         var questionGen = [{
             question: "How many velociraptors appear in Jurassic Park?",
             answer: ["One", "Two", "Three", "Four"],
-            correctAns: "Four"
+            correctAns: "Four",
+            img:"assets/images/cleverGirl.gif"
             }, {
-            question: "The Tryannosaurus Rex has been affectionately named ____ by the fans",
+            question: "The Tyrannosaurus Rex has been affectionately named ____ by the fans",
             answer: ["Arexa", "Rexy", "Barney", "Roberta"],
-            correctAns: "Rexy"
+            correctAns: "Rexy",
+            img:"assets/images/trex.gif"
             }, {
             question: "Amongst other sound effects, what animals were used to create the T-Rex roar?",
             answer: ["Alligators", "Tigers", "Baby Elephants", "All the above"],
-            correctAns: "All the above"
+            correctAns: "All the above",
+            img:"assets/images/trexRoar.gif"
             }, {
             question: "Although Jurassic Park is catchy, most dinosaurs in the film come from which period?",
             answer: ["Triassic", "Cambrian Period", "no, it's the Jurassic Period", "Cretaceous Period"],
-            correctAns: "Cretaceous Period"
+            correctAns: "Cretaceous Period",
+            img:"assets/images/gate.gif"
             }, {
             question: "Jurassic Park has a runtime of 127 minutes. How many of them actually contain dinosaurs?",
             answer: ["10 Minutes", "15 Minutes", "22 Minutes", "27 Minutes"],
-            correctAns: "15 Minutes"
+            correctAns: "15 Minutes",
+            img:"assets/images/raptor.gif"
             }, {
             question: "What was Jurassic Park's biggest fault?",
             answer: ["Too Much Automation", "...It's Dinosaurs", "The Dinosaurs Didn't Have Feathers.", "Weather"],
-            correctAns: "Too Much Automation"
+            correctAns: "Too Much Automation",
+            img:"assets/images/automation.gif"
             }, {
             question: "What was John Hammond's signature catch phrase?",
             answer: ["Spared Some Expense!", "Spared No Expense!", "Welcome to Jurassic Park!", "We have a T-Rex!"],
-            correctAns: "Spared No Expense!"
+            correctAns: "Spared No Expense!",
+            img:"assets/images/expense.gif"
             }, {
             question: "What island is Jurassic Park built on?",
             answer: ["Isla Sorna", "Isla Muerte", "Isla Nublar", "Isla Pena"],
-            correctAns: "Isla Nublar"
+            correctAns: "Isla Nublar",
+            img:"assets/images/island.gif"
             }];
 
             console.log("Array Length: "+questionGen.length);
         
-        var time = 30;
+        var time = 20;
         var wins = 0;
         var losses = 0;
         var noAnswer = 0;
@@ -114,8 +125,10 @@
                 noAnswer++;
                 stop();
                 hideButtons();
+                $('audio#timeUp')[0].play()
+                $(".img").html("<img src='assets/images/timeUp.gif' width='480'></img>");
                 $(".result").html("<h2>Not Answered in Time</h2>");
-                setTimeout(notAnswered, 3000);
+                setTimeout(notAnswered, 5000);
             }
         }
 
@@ -132,6 +145,8 @@
             if ($(event.target).data("answer")== questionGen[questionCounter].correctAns) {
                 hideButtons();
                 $(".result").html("<h2>Correct!</h2>");
+                $(".img").html("<img src='"+questionGen[questionCounter].img+"' width='480' height='360'></img>");
+                $('audio#correct')[0].play()
                 wins++;
                 setTimeout(rightAnswer, 3000);
             } else {
@@ -142,6 +157,9 @@
                 losses++;
                 setTimeout(wrongAnswer, 3000);
             }
+            if ($(event.target).data("answer")== questionGen[2].correctAns) {
+                $('audio#roar')[0].play()
+            }
         }
 
         function rightAnswer() {
@@ -150,12 +168,13 @@
             console.log("questioncounter:"+questionCounter);
             showButtons();
             gameStart()
-            time = 30;
+            time = 20;
             $(".timer").html(time + " seconds");
             console.log("wins: "+wins);
             console.log("Losses: "+losses);
             console.log("Unanswered: "+noAnswer);
             $(".result").empty();
+            $(".img").empty();
         }
 
         function wrongAnswer() {
@@ -164,7 +183,7 @@
             console.log("questioncounter:"+questionCounter);
             showButtons();
             gameStart();
-            time = 30;
+            time = 20;
             $(".timer").html(time + " seconds");
             console.log("wins: "+wins);
             console.log("Losses: "+losses);
@@ -178,12 +197,13 @@
             console.log("questioncounter:"+questionCounter);
             showButtons();
             gameStart();
-            time = 30;
+            time = 20;
             $(".timer").html(time + " seconds");
             console.log("wins: "+wins);
             console.log("Losses: "+losses);
             console.log("Unanswered: "+noAnswer);
             $(".result").empty();
+            $(".img").empty();
         }
 
         function finalResults() {
@@ -198,7 +218,7 @@
                 wins = 0;
                 losses = 0;
                 questionCounter = 0;
-                time = 30;
+                time = 20;
                 $(".timer").show();
                 $(".stats").empty();
                 gameStart();
