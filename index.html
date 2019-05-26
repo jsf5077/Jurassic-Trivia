@@ -18,15 +18,14 @@
         <button class="start">Click to Start Game!</button>
         <div class="question"></div>
         <div class="button"></div>
-        <!-- <button class="button1"></button>
-        <button class="button2"></button>
-        <button class="button3"></button>
-        <button class="button4"></button> -->
+        
     <!-- JQuery -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Script -->
     <script>
-        //GLOBAL ARRAYS FOR QUESTIONS
+        //GLOBAL VARIABLES////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //ARRAY FOR QUESTIONS
         var questionGen = [{
             question1: "question one",
             answer1: ["answer one a", "answer two a", "answer three a", "answer four a"],
@@ -34,44 +33,39 @@
             }, {
             question2: "question two",
             answer2: ["answer one b", "answer two b", "answer three b", "answer four b"],
-            correctAns1: "answer one b"
+            correctAns2: "answer one b"
             }];
 
             console.log(questionGen);
-        //VARIABLES THAT WILL HELP DETERMINE WHICH QUESTIONS/ANSWERS TO POPULATE
-        var q1, q2 = false;
         
-        //GLOBAL VARIABLES 
         var time = 30;
         var wins = 0;
         var losses = 0;
         var noAnswer = 0;
+
         //PLACEHOLDER FOR TIMER INTERVAL
         var interval;
 
-        //CLICK FUNCTIONS FOR BUTTONS
-        $(".start").on("click", start);
-        // $(".button2").on("click", stop);
-        // $(".button3").on("click", stop);
-        // $(".button4").on("click", stop);
+
+        //FUNCTIONS////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         function hideButtons() {
             //HIDE THE BUTTONS AND QUESTION FOR THE START PAGE
             $(".question").hide();
         }
 
-        hideButtons();
         function showButtons() {
             //SHOW THE BUTTONS FOR GAME START
             $(".question").show();
         }
 
-        //TRIGGERED BY THE START BUTTON
+        //STARTS THE TIME INTERVAL
         function start() {
             //RESETS INTERVAL
             clearInterval(interval);
             interval = setInterval(decrement, 1000);
         }
+
         //ALLOWS THE TIMER TO VISIBLY COUNT DOWN
         function decrement() {
             time--
@@ -79,41 +73,47 @@
             if (time === 0) {
                 noAnswer++;
                 stop();
+                alert("Time's up loser!");
             }
         }
+
         //STOPS INTERVAL
         function stop() {
             clearInterval(interval);
         }
 
-        //START BUTTON TO INITIATE A GAME START FUNCTION
-        $(".start").on("click", function() {
-            gameStart();
-            $(this).hide();
-        });
-
         //GAME START FUNCTION WILL CONTAIN THE ENTIRETY OF THE GAME
         function gameStart() {
-            //STOPS INTERVAL
-            function stop() {
-            clearInterval(interval);
-            }
+            //MAKE BUTTONS APPEAR
             showButtons();
             //QUESTION ONE
             $(".question").html("<h2>"+questionGen[0].question1+"</h2>");
             //QUESTION ONE
-                //FOUR BUTTONS HERE
+            //USING A FOR LOOP TO GENERATE THE BUTTONS RATHER THAN TYPING OUT FOUR SEPERATE BUTTONS.
             for (i = 0; i < questionGen[0].answer1.length; i++) {
-                $(".question").append("<button class='button'>"+questionGen[0].answer1[i]+"</button>")
+                //APPEND BUTTONS TO HTML. FOUND OUT HOW TO STORE DATA (OR ANSWERS IN THIS CASE) TO EACH BUTTON.
+                $(".question").append("<button class='button' id='button"+i+"' data-answer='"+questionGen[0].answer1[i]+"'>"+questionGen[0].answer1[i]+"</button>");
             }
-            $(".button").on("click", stop);
-        }
-           
+            console.log($("#button0").attr("data-answer"));
+            console.log($("#button1").attr("data-answer"));
+            console.log($("#button2").attr("data-answer"));
+            console.log($("#button3").attr("data-answer"));
 
+        }
+
+        //MAIN PROCESS//////////////////////////////////////////////////////////////////////////////////////////////////////// 
+        //CLICK FUNCTIONS FOR START BUTTON
+
+        hideButtons();
+
+        $(".start").on("click", start);
+
+        $(".start").on("click", function() {
+            $(this).remove();
+            gameStart();
+        });
             
-            //TIMER FOR 30 SECONDS
-                // IF TIMER HITS ZERO, MOVE TO NEXT QUESTION AND TALLY UNANSWERED
-                // IF USER CLICKS BUTTON, RESET TIMER.
+            
             //QUESTION ONE
                 //FOUR BUTTONS HERE
                     //CORRECT QUESS BUTTON
