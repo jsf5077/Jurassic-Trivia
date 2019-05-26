@@ -82,6 +82,20 @@
             clearInterval(interval);
         }
 
+
+
+        //CHECK USER SELECTION TO SEE IF IT WAS THE CORRECT ANSWER
+        //INFORMATION FROM THE BUTTON CLICK IS PUSHED INTO THIS FUNCTION
+        function checkAnswer(event) {
+            stop();
+            //IF ELSE STATEMENT THAT COMPARES THE BUTTON DATA WITH THE CURRENT QUESTIONS CORRECT ANSWER
+            if ($(event.target).data("answer")== questionGen[0].correctAns1) {
+                console.log("correct answer!");
+            } else {
+                console.log("Wrong answer!");
+            }
+        }
+
         //GAME START FUNCTION WILL CONTAIN THE ENTIRETY OF THE GAME
         function gameStart() {
             //MAKE BUTTONS APPEAR
@@ -99,6 +113,13 @@
             console.log($("#button2").attr("data-answer"));
             console.log($("#button3").attr("data-answer"));
 
+            //CHECKS DOCUMENT PAGE FOR EVENT CLICK
+            $(document).on("click", '.button', function(event) {
+                console.log("user click");
+                //PASS EVENT CLICK BUTTON ONFIRMATION INTO THE CHECK ANSWER FUNCTION
+                checkAnswer(event);
+            });
+            
         }
 
         //MAIN PROCESS//////////////////////////////////////////////////////////////////////////////////////////////////////// 
