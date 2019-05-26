@@ -17,6 +17,8 @@
         <h2 class="timer">30 seconds</h2>
         <button class="start">Click to Start Game!</button>
         <div class="question"></div>
+        <div class="result"></div>
+        <div class="stats"></div>
         <div class="button"></div>
         
     <!-- JQuery -->
@@ -27,13 +29,17 @@
 
         //ARRAY FOR QUESTIONS
         var questionGen = [{
-            question1: "question one",
-            answer1: ["answer one a", "answer two a", "answer three a", "answer four a"],
-            correctAns1: "answer one a"
+            question: "question one",
+            answer: ["answer one a", "answer two a", "answer three a", "answer four a"],
+            correctAns: "answer one a"
             }, {
-            question2: "question two",
-            answer2: ["answer one b", "answer two b", "answer three b", "answer four b"],
-            correctAns2: "answer one b"
+            question: "question two",
+            answer: ["answer one b", "answer two b", "answer three b", "answer four b"],
+            correctAns: "answer one b"
+            }, {
+            question: "question three",
+            answer: ["answer one c", "answer two c", "answer three c", "answer four c"],
+            correctAns: "answer one c"
             }];
 
             console.log(questionGen);
@@ -42,10 +48,13 @@
         var wins = 0;
         var losses = 0;
         var noAnswer = 0;
+        var questionCounter = 0;
+        var gameEnd = false;
 
         //PLACEHOLDER FOR TIMER INTERVAL
         var interval;
 
+        console.log(questionGen.length);
 
         //FUNCTIONS////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -82,44 +91,88 @@
             clearInterval(interval);
         }
 
-
-
         //CHECK USER SELECTION TO SEE IF IT WAS THE CORRECT ANSWER
         //INFORMATION FROM THE BUTTON CLICK IS PUSHED INTO THIS FUNCTION
         function checkAnswer(event) {
             stop();
             //IF ELSE STATEMENT THAT COMPARES THE BUTTON DATA WITH THE CURRENT QUESTIONS CORRECT ANSWER
-            if ($(event.target).data("answer")== questionGen[0].correctAns1) {
-                console.log("correct answer!");
+            if ($(event.target).data("answer")== questionGen[questionCounter].correctAns) {
+                hideButtons();
+                $(".result").html("<h2>Right Answer</h2>");
+                wins++;
+                setTimeout(rightAnswer, 3000);
             } else {
-                console.log("Wrong answer!");
+                hideButtons();
+                $(".result").html("<h2>Wrong Answer</h2>");
+                losses++;
+                setTimeout(wrongAnswer, 3000);
             }
+        }
+
+        function rightAnswer() {
+            console.log("reset");
+            questionCounter++;
+            
+            console.log("questioncounter:"+questionCounter);
+            showButtons();
+            gameStart()
+            time = 30;
+            $(".timer").html(time + " seconds");
+            start();
+            console.log("wins: "+wins);
+            console.log("Losses: "+losses);
+            $(".result").empty();
+        }
+
+        function wrongAnswer() {
+            console.log("reset");
+            questionCounter++;
+            
+            console.log("questioncounter:"+questionCounter);
+            showButtons();
+            gameStart();
+            time = 30;
+            $(".timer").html(time + " seconds");
+            start();
+            console.log("wins: "+wins);
+            console.log("Losses: "+losses);
+            $(".result").empty();
+        }
+
+        function finalResults() {
+            $(".question").html("<h2>Game Over!</h2>");
+            $(".result").html("<button class='final'>Click to play again!</button>")
+            $(".stats").append("<div class='score'>Answers correct: "+wins+"</div>")
+            $(".stats").append("<div class='score'>Answers wrong: "+losses+"</div>")
+            $(".result").on("click", function() {
+                $(this).remove();
+                wins = 0;
+                losses = 0;
+                questionCounter = 0;
+                time = 30;
+                $(".stats").hide();
+                gameStart();
+                start();
+            });
         }
 
         //GAME START FUNCTION WILL CONTAIN THE ENTIRETY OF THE GAME
         function gameStart() {
             //MAKE BUTTONS APPEAR
             showButtons();
-            //QUESTION ONE
-            $(".question").html("<h2>"+questionGen[0].question1+"</h2>");
+            //QUESTION APPEARS
+            $(".question").html("<h2>"+questionGen[questionCounter].question+"</h2>");
+            console.log("Question: "+questionGen[questionCounter].question);
             //QUESTION ONE
             //USING A FOR LOOP TO GENERATE THE BUTTONS RATHER THAN TYPING OUT FOUR SEPERATE BUTTONS.
-            for (i = 0; i < questionGen[0].answer1.length; i++) {
+            for (i = 0; i < questionGen[questionCounter].answer.length; i++) {
                 //APPEND BUTTONS TO HTML. FOUND OUT HOW TO STORE DATA (OR ANSWERS IN THIS CASE) TO EACH BUTTON.
-                $(".question").append("<button class='button' id='button"+i+"' data-answer='"+questionGen[0].answer1[i]+"'>"+questionGen[0].answer1[i]+"</button>");
+                $(".question").append("<button class='button' id='button"+i+"' data-answer='"+questionGen[questionCounter].answer[i]+"'>"+questionGen[questionCounter].answer[i]+"</button>");
             }
             console.log($("#button0").attr("data-answer"));
             console.log($("#button1").attr("data-answer"));
             console.log($("#button2").attr("data-answer"));
             console.log($("#button3").attr("data-answer"));
-
-            //CHECKS DOCUMENT PAGE FOR EVENT CLICK
-            $(document).on("click", '.button', function(event) {
-                console.log("user click");
-                //PASS EVENT CLICK BUTTON ONFIRMATION INTO THE CHECK ANSWER FUNCTION
-                checkAnswer(event);
-            });
-            
         }
 
         //MAIN PROCESS//////////////////////////////////////////////////////////////////////////////////////////////////////// 
@@ -133,26 +186,13 @@
             $(this).remove();
             gameStart();
         });
-            
-            
-            //QUESTION ONE
-                //FOUR BUTTONS HERE
-                    //CORRECT QUESS BUTTON
-                        //TALLYS A WIN, RESET TIMER, NEXT QUESTION
-                    //INCORRECT GUESS BUTTON
-                        //WHEN PRESSED TALLY A LOSS, RESET TIMER, NEXT QUESTION
-            //QUESTIONS TWO - 7 REPEAT
-            //QUESTION EIGHT
-                //REPEAT BEHAVIOR OF OTHER BUTTONS, BUT DOES NOT RESET GAME, BUT ENDS GAME
-            //END GAME SCREEN
-                //POST RESULTS
-                //PLAY AGAIN BUTTON
-                    //WHEN PRESSED RESET SCORE AND RERUN GAME START FUNCTION
-        
-        
-        
-    
-    
+        //CHECKS DOCUMENT PAGE FOR EVENT CLICK. ORIGINALLY HAD THIS INSIDE THE GAMESTART FUNCTION AND FOUND THAT THERE WAS A SCOPING ISSUE
+        $(document).on("click", '.button', function(event) {
+            console.log("user click");
+            //PASS EVENT CLICK BUTTON ONFIRMATION INTO THE CHECK ANSWER FUNCTION
+            checkAnswer(event);
+        });
+   
     </script>
 
   </body>
