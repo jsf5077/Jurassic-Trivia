@@ -219,7 +219,7 @@ function gameStart() {
 $(document).ready(function() {
     hideButtons();
 
-    $('audio#opening')[0].play()
+    $('audio#opening').get([0]).play();
     $(".stop").hide();
     $(".play").hide();
     $(".timer").hide();
