@@ -3,291 +3,56 @@
 <html lang="en-us">
 
   <head>
-
     <meta charset="UTF-8">
-
     <title>Jurassic Trivia</title>
+    <!-- Added a link to Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!--Linking css file-->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
     
 
   </head>
 
   <body>
-        <button class="stop">Pause Music</button>
-        <button class="play">Play Music</button>
-        <h1>Jurassic Trivia</h1>
-        <h2 class="timer">20 seconds</h2>
-        <button class="start">Click to Start Game!</button>
-        <button class="again">Play Again!</button>
-        <div class="question"></div>
-        <div class="result"></div>
-        <div class="img"></div>
-        <div class="stats"></div>
-        <div class="button"></div>
-        <audio id="opening"><source src="assets/music/opening.mp3" type="audio/mpeg"></audio>
-        <audio id="main"><source src="assets/music/main.mp3" type="audio/mpeg"></audio>
-        <audio id="wrong"><source src="assets/music/magic.mp3" type="audio/mpeg"></audio>
-        <audio id="roar"><source src="assets/music/roar.mp3" type="audio/mpeg"></audio>
-        <audio id="correct"><source src="assets/music/correct.mp3" type="audio/mpeg"></audio>
-        <audio id="timeUp"><source src="assets/music/timeUp.mp3" type="audio/mpeg"></audio>
+        <div class="jumbotron banner py-5 m-0">
+            <h1 id=title>Jurassic Trivia</h1>
+            <button class="stop btn-lg btn-dark m-5 text-left" id="playBtn">Pause Music</button>
+            <button class="play btn-lg btn-dark m-5 text-left" id="playBtn">Play Music</button>
+        </div>
+       <div class="container col-12">
+            <div class="row">
+                <h2 class="timer col-12 btn-block py-3 text-center" id="button3">20 seconds</h2>
+                <button class="start btn-lg col-6" id="button">Click to Start Game!</button>
+                <button class="again btn-lg col-6" id="button">Play Again!</button>
+            </div>
+            <div class="row justify-content-center">
+                <div class="question btn-block col-10 text-center" id="button3"></div>
+                <div class="answers btn-block col-10 text-center"></div>
+                <div class="result"></div>
+            </div>
+            <div class="btn-block justify-content-center">
+                <div class="button"></div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="img"></div>
+                <div class="stats"></div>
+            </div>
+            
+       </div>
+        <div id="audio-container">
+            <audio id="opening"><source src="assets/music/opening.mp3" type="audio/mpeg"></audio>
+            <audio id="main"><source src="assets/music/main.mp3" type="audio/mpeg"></audio>
+            <audio id="wrong"><source src="assets/music/magic.mp3" type="audio/mpeg"></audio>
+            <audio id="roar"><source src="assets/music/roar.mp3" type="audio/mpeg"></audio>
+            <audio id="correct"><source src="assets/music/correct.mp3" type="audio/mpeg"></audio>
+            <audio id="timeUp"><source src="assets/music/timeUp.mp3" type="audio/mpeg"></audio>
+        </div>
         
     <!-- JQuery -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Script -->
-    <script>
-        //GLOBAL VARIABLES////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // {
-        //     question: "When Lex tries to go on the computer to lock the building doors, she famously states...",
-        //     answer: ["It's a Linux System!", "It's a Windows System!", "It's a Unix System!", "It's a MacOS System!"],
-        //     correctAns: "It's a Unix System!"
-        //     },
-        //ARRAY FOR QUESTIONS
-        var questionGen = [{
-            question: "How many velociraptors appear in Jurassic Park?",
-            answer: ["One", "Two", "Three", "Four"],
-            correctAns: "Four",
-            img:"assets/images/cleverGirl.gif"
-            }, {
-            question: "The Tyrannosaurus Rex has been affectionately named ____ by the fans",
-            answer: ["Arexa", "Rexy", "Barney", "Roberta"],
-            correctAns: "Rexy",
-            img:"assets/images/trex.gif"
-            }, {
-            question: "Amongst other sound effects, what animals were used to create the T-Rex roar?",
-            answer: ["Alligators", "Tigers", "Baby Elephants", "All the above"],
-            correctAns: "All the above",
-            img:"assets/images/trexRoar.gif"
-            }, {
-            question: "Although Jurassic Park is catchy, most dinosaurs in the film come from which period?",
-            answer: ["Triassic", "Cambrian Period", "no, it's the Jurassic Period", "Cretaceous Period"],
-            correctAns: "Cretaceous Period",
-            img:"assets/images/gate.gif"
-            }, {
-            question: "Jurassic Park has a runtime of 127 minutes. How many of them actually contain dinosaurs?",
-            answer: ["10 Minutes", "15 Minutes", "22 Minutes", "27 Minutes"],
-            correctAns: "15 Minutes",
-            img:"assets/images/raptor.gif"
-            }, {
-            question: "What was Jurassic Park's biggest fault?",
-            answer: ["Too Much Automation", "...It's Dinosaurs", "The Dinosaurs Didn't Have Feathers.", "Weather"],
-            correctAns: "Too Much Automation",
-            img:"assets/images/automation.gif"
-            }, {
-            question: "What was John Hammond's signature catch phrase?",
-            answer: ["Spared Some Expense!", "Spared No Expense!", "Welcome to Jurassic Park!", "We have a T-Rex!"],
-            correctAns: "Spared No Expense!",
-            img:"assets/images/expense.gif"
-            }, {
-            question: "What island is Jurassic Park built on?",
-            answer: ["Isla Sorna", "Isla Muerte", "Isla Nublar", "Isla Pena"],
-            correctAns: "Isla Nublar",
-            img:"assets/images/island.gif"
-            }];
-
-            console.log("Array Length: "+questionGen.length);
-        
-        var time = 20;
-        var wins = 0;
-        var losses = 0;
-        var noAnswer = 0;
-        var questionCounter = 0;
-        console.log("questioncounter:"+questionCounter);
-        var gameEnd = false;
-
-        //PLACEHOLDER FOR TIMER INTERVAL
-        var interval;
-
-        //FUNCTIONS////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        function hideButtons() {
-            //HIDE THE BUTTONS AND QUESTION FOR THE START PAGE
-            $(".question").hide();
-            $(".again").hide();
-        }
-
-        function showButtons() {
-            //SHOW THE BUTTONS FOR GAME START
-            $(".question").show();
-        }
-
-        //STARTS THE TIME INTERVAL
-        function start() {
-            //RESETS INTERVAL
-            clearInterval(interval);
-            interval = setInterval(decrement, 1000);
-        }
-
-        //ALLOWS THE TIMER TO VISIBLY COUNT DOWN
-        function decrement() {
-            time--
-            $(".timer").html(time + " seconds");
-            if (time === 0) {
-                noAnswer++;
-                stop();
-                hideButtons();
-                $('audio#timeUp')[0].play()
-                $(".img").html("<img src='assets/images/timeUp.gif' width='480'></img>");
-                $(".result").html("<h2>Not Answered in Time</h2>");
-                setTimeout(notAnswered, 5000);
-            }
-        }
-
-        //STOPS INTERVAL
-        function stop() {
-            clearInterval(interval);
-        }
-
-        //CHECK USER SELECTION TO SEE IF IT WAS THE CORRECT ANSWER
-        //INFORMATION FROM THE BUTTON CLICK IS PUSHED INTO THIS FUNCTION
-        function checkAnswer(event) {
-            stop();
-            //IF ELSE STATEMENT THAT COMPARES THE BUTTON DATA WITH THE CURRENT QUESTIONS CORRECT ANSWER
-            if ($(event.target).data("answer")== questionGen[questionCounter].correctAns) {
-                hideButtons();
-                $(".result").html("<h2>Correct!</h2>");
-                $(".img").html("<img src='"+questionGen[questionCounter].img+"' width='480' height='360'></img>");
-                $('audio#correct')[0].play()
-                wins++;
-                setTimeout(rightAnswer, 3000);
-            } else {
-                hideButtons();
-                $(".result").html("<h2>Wrong Answer</h2>");
-                $(".img").html("<img src='assets/images/wrong.gif' width='480' height='360'></img>");
-                $('audio#wrong')[0].play()
-                losses++;
-                setTimeout(wrongAnswer, 3000);
-            }
-            if ($(event.target).data("answer")== questionGen[2].correctAns) {
-                $('audio#roar')[0].play()
-            }
-        }
-
-        function rightAnswer() {
-            console.log("reset");
-            questionCounter++;
-            console.log("questioncounter:"+questionCounter);
-            showButtons();
-            gameStart()
-            time = 20;
-            $(".timer").html(time + " seconds");
-            console.log("wins: "+wins);
-            console.log("Losses: "+losses);
-            console.log("Unanswered: "+noAnswer);
-            $(".result").empty();
-            $(".img").empty();
-        }
-
-        function wrongAnswer() {
-            console.log("reset");
-            questionCounter++;
-            console.log("questioncounter:"+questionCounter);
-            showButtons();
-            gameStart();
-            time = 20;
-            $(".timer").html(time + " seconds");
-            console.log("wins: "+wins);
-            console.log("Losses: "+losses);
-            console.log("Unanswered: "+noAnswer);
-            $(".result").empty();
-            $(".img").empty();
-        }
-        function notAnswered() {
-            console.log("reset");
-            questionCounter++;
-            console.log("questioncounter:"+questionCounter);
-            showButtons();
-            gameStart();
-            time = 20;
-            $(".timer").html(time + " seconds");
-            console.log("wins: "+wins);
-            console.log("Losses: "+losses);
-            console.log("Unanswered: "+noAnswer);
-            $(".result").empty();
-            $(".img").empty();
-        }
-
-        function finalResults() {
-            stop();
-            $(".timer").hide();
-            $(".question").html("<h2>Game Over!</h2>");
-            $(".stats").append("<div class='score'>Answers Correct: "+wins+"</div>");
-            $(".stats").append("<div class='score'>Answers Wrong: "+losses+"</div>");
-            $(".stats").append("<div class='score'>Questions Not Answered: "+noAnswer+"</div>");
-            $(".again").on("click", function() {
-                $(this).hide();
-                wins = 0;
-                losses = 0;
-                questionCounter = 0;
-                time = 20;
-                $(".timer").show();
-                $(".stats").empty();
-                gameStart();
-                start();
-            });
-        }
-
-        //GAME START FUNCTION WILL CONTAIN THE ENTIRETY OF THE GAME
-        function gameStart() {
-            if (questionCounter === questionGen.length) {
-                $(".again").show();
-                finalResults();
-                return;
-            } else {
-                start();
-            //MAKE BUTTONS APPEAR
-            showButtons();
-            //QUESTION APPEARS
-            $(".question").html("<h2>"+questionGen[questionCounter].question+"</h2>");
-            console.log("Question: "+questionGen[questionCounter].question);
-            //QUESTION ONE
-            //USING A FOR LOOP TO GENERATE THE BUTTONS RATHER THAN TYPING OUT FOUR SEPERATE BUTTONS.
-            for (i = 0; i < questionGen[questionCounter].answer.length; i++) {
-                //APPEND BUTTONS TO HTML. FOUND OUT HOW TO STORE DATA (OR ANSWERS IN THIS CASE) TO EACH BUTTON.
-                $(".question").append("<button class='button' id='button"+i+"' data-answer='"+questionGen[questionCounter].answer[i]+"'>"+questionGen[questionCounter].answer[i]+"</button>");
-            }
-            console.log($("#button0").attr("data-answer"));
-            console.log($("#button1").attr("data-answer"));
-            console.log($("#button2").attr("data-answer"));
-            console.log($("#button3").attr("data-answer"));
-            }
-        }
-
-        //MAIN PROCESS//////////////////////////////////////////////////////////////////////////////////////////////////////// 
-        //CLICK FUNCTIONS FOR START BUTTON
-        $(document).ready(function() {
-            hideButtons();
-
-            $('audio#opening')[0].play()
-            $(".stop").hide();
-            $(".play").hide();
-
-            $(".start").on("click", function() {
-                $('audio#opening')[0].pause()
-                $('audio#opening')[0].currentTime = 0
-                $('audio#main')[0].play()
-                $(this).remove();
-                $(".stop").show();
-                gameStart();
-            });
-            $(".stop").on("click", function() {
-                $('audio#main')[0].pause()
-                $(".stop").hide();
-                $(".play").show();
-            });
-            $(".play").on("click", function() {
-                $('audio#main')[0].play()
-                $(".stop").show();
-                $(".play").hide();
-            });
-            //CHECKS DOCUMENT PAGE FOR EVENT CLICK. ORIGINALLY HAD THIS INSIDE THE GAMESTART FUNCTION AND FOUND THAT THERE WAS A SCOPING ISSUE
-            $(document).on("click", '.button', function(event) {
-                console.log("user click");
-                //PASS EVENT CLICK BUTTON ONFIRMATION INTO THE CHECK ANSWER FUNCTION
-                checkAnswer(event);
-            });
-        });
-   
-    </script>
+    <script type="text/javascript" src="assets/javascript/app.js"></script>
 
   </body>
 
