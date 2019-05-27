@@ -9,4 +9,8 @@ If you are interested in developing your own trivia game with jquery it is highl
 
 Before you begin coding, it is essential that you spend some time on your pseudocode. When you think you're done that, go back and revise it because this game is trickier than you may think and it's important you don't miss any fine details. 
 
+<<<<<<< HEAD
 If you get stuck, sources I use are stackOverflow and w3 along with referencing from the bootstrap (for styling) and jquery websites. 
+=======
+If you get stuck, sources I use are stackOverflow and w3 along with referencing from the bootstrap (for styling) and jquery websites. 
+>>>>>>> ef7fa088dd46c4c2f4f8cf78e884fb5c510b1f13
