@@ -157,6 +157,7 @@ function notAnswered() {
     console.log("reset");
     questionCounter++;
     console.log("questioncounter:"+questionCounter);
+    $(".answers").empty();
     showButtons();
     gameStart();
     time = 20;
@@ -179,10 +180,12 @@ function finalResults() {
         $(this).hide();
         wins = 0;
         losses = 0;
+        noAnswer = 0;
         questionCounter = 0;
         time = 20;
         $(".timer").show();
         $(".stats").empty();
+        $(".answers").empty();
         gameStart();
         start();
     });
@@ -218,8 +221,6 @@ function gameStart() {
 //CLICK FUNCTIONS FOR START BUTTON
 $(document).ready(function() {
     hideButtons();
-    
-    $('audio#opening').get([0]).play();
     $(".stop").hide();
     $(".play").hide();
     $(".timer").hide();

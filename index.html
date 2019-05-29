@@ -15,7 +15,6 @@
   </head>
 
   <body>
-        
         <div class="jumbotron banner py-5 m-0">
             <h1 id=title>Jurassic Trivia</h1>
             <button class="stop btn-lg btn-dark m-5 text-left" id="playBtn">Pause Music</button>
@@ -43,6 +42,7 @@
             
        </div>
         <div id="audio-container">
+            <iframe src="assets/music/opening.mp3" allow="autoplay" id="audio" style="display:none"></iframe>
             <audio id="opening"><source src="assets/music/opening.mp3" type="audio/mpeg"></audio>
             <audio id="main"><source src="assets/music/main.mp3" type="audio/mpeg"></audio>
             <audio id="wrong"><source src="assets/music/magic.mp3" type="audio/mpeg"></audio>
