@@ -218,7 +218,7 @@ function gameStart() {
 //CLICK FUNCTIONS FOR START BUTTON
 $(document).ready(function() {
     hideButtons();
-
+    
     $('audio#opening').get([0]).play();
     $(".stop").hide();
     $(".play").hide();
