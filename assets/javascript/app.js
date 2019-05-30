@@ -226,14 +226,15 @@ $(document).ready(function() {
     $(".timer").hide();
 
     $(".start").on("click", function() {
-        $('audio#opening')[0].pause()
-        $('audio#opening')[0].currentTime = 0
+        $("#audio").remove();
+        $("Open").remove();
         $('audio#main')[0].play()
         $(this).remove();
         $(".stop").show();
         $(".timer").show();
         gameStart();
     });
+
     $(".stop").on("click", function() {
         $('audio#main')[0].pause()
         $(".stop").hide();
