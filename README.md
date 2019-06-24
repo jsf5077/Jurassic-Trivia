@@ -1,4 +1,4 @@
-# TriviaGame
+# Jurassic Trivia
 
 https://jsf5077.github.io/TriviaGame/
 
