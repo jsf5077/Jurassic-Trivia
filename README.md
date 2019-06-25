@@ -1,6 +1,6 @@
 # Jurassic Trivia
 
-https://jsf5077.github.io/TriviaGame/
+https://jsf5077.github.io/Jurassic-Trivia/
 
 Hello and welcome to Jurassic Trivia!
 
