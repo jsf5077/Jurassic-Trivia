@@ -4,7 +4,7 @@ https://jsf5077.github.io/TriviaGame/
 
 Hello and welcome to Jurassic Trivia!
 
-This project is to demonstrate the ability to use javascript to create a web-based trivia game. One of the key functions to take away from this game is the use of time intervals. As demonstated in the game, the time interval helps keep the game moving along which also challenges the player to move quickly to complete the game. 
+This project is to demonstrate the ability to use javascript to create a web-based trivia game. One of the key functions to take away from this game is the use of time intervals. As demonstrated in the game, the time interval helps keep the game moving along which also challenges the player to move quickly to complete the game. 
 
 A project like this is useful because it shows you how to have control over when things happen on your page. Time intervals are a very powerful tool and the possibilities to utillize them are endless. 
 
